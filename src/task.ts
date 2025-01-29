@@ -1,4 +1,4 @@
-import { getCategories } from './mockedApi';
+import { Category } from './mockedApi';
 
 export interface CategoryListElement {
   name: string;
@@ -9,8 +9,11 @@ export interface CategoryListElement {
   showOnHome: boolean;
 }
 
-export const categoryTree = async (): Promise<CategoryListElement[]> => {
-  const res = await getCategories();
+export const categoryTree = async (
+  fetchCategories: () => Promise<{ data: Category[] }>
+): Promise<CategoryListElement[]> => {
+
+  const res = await fetchCategories();
 
   if (!res.data) {
     return [];
@@ -31,7 +34,7 @@ export const categoryTree = async (): Promise<CategoryListElement[]> => {
     }
     const l2Kids = c1.children
       ? c1.children.map((c2) => {
-          let order2 = c1.Title;
+          let order2 = c2.Title; 
           if (c2.Title && c2.Title.includes('#')) {
             order2 = c2.Title.split('#')[0];
           }
@@ -41,7 +44,7 @@ export const categoryTree = async (): Promise<CategoryListElement[]> => {
           }
           const l3Kids = c2.children
             ? c2.children.map((c3) => {
-                let order3 = c1.Title;
+                let order3 = c3.Title; 
                 if (c3.Title && c3.Title.includes('#')) {
                   order3 = c3.Title.split('#')[0];
                 }
@@ -51,33 +54,33 @@ export const categoryTree = async (): Promise<CategoryListElement[]> => {
                 }
                 return {
                   id: c3.id,
-                  image: c3.MetaTagDescription,
                   name: c3.name,
                   order: orderL3,
-                  children: [],
+                  image: c3.MetaTagDescription,
                   showOnHome: false,
+                  children: [],
                 };
               })
             : [];
           l3Kids.sort((a, b) => a.order - b.order);
           return {
             id: c2.id,
-            image: c2.MetaTagDescription,
             name: c2.name,
             order: orderL2,
-            children: l3Kids,
+            image: c2.MetaTagDescription,
             showOnHome: false,
+            children: l3Kids,
           };
         })
       : [];
     l2Kids.sort((a, b) => a.order - b.order);
     return {
       id: c1.id,
-      image: c1.MetaTagDescription,
       name: c1.name,
       order: orderL1,
-      children: l2Kids,
+      image: c1.MetaTagDescription,
       showOnHome: false,
+      children: l2Kids,
     };
   });
 
