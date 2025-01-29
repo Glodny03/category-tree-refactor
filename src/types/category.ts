@@ -1,5 +1,3 @@
-import { INPUT } from './input';
-
 export interface Category {
   id: number;
   name: string;
@@ -10,6 +8,11 @@ export interface Category {
   children: Category[];
 }
 
-export const getCategories = async (): Promise<{ data: Category[] }> => ({
-  data: INPUT,
-});
+export interface CategoryListElement {
+  name: string;
+  id: number;
+  image: string;
+  order: number;
+  children: CategoryListElement[];
+  showOnHome: boolean;
+}
