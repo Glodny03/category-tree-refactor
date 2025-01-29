@@ -1,9 +1,6 @@
-import { Category, CategoryListElement } from 'types/category';
+import { Category, CategoryListElement } from '../../types';
 
-import {
-  buildCategoryElement,
-  setShowOnHomeFlags,
-} from './categoryHelpers';
+import { buildCategoryElement, setShowOnHomeFlags } from './categoryHelpers';
 
 export const categoryTree = async (
   fetchCategories: () => Promise<{ data: Category[] }>
@@ -12,7 +9,6 @@ export const categoryTree = async (
   if (!data) return [];
 
   const toShowOnHome: number[] = [];
-
   const rootCategories = data
     .map((cat) => buildCategoryElement(cat, toShowOnHome))
     .sort((a, b) => a.order - b.order);

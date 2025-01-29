@@ -1,4 +1,4 @@
-import { Category, CategoryListElement } from 'types';
+import { Category, CategoryListElement } from '../../types';
 
 export const parseCategoryOrder = (
   title: string | undefined,
